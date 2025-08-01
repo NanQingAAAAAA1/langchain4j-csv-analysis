@@ -7,10 +7,14 @@ import com.opencsv.exceptions.CsvException;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.zhipu.ZhipuAiChatModel;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.time.Duration;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -39,15 +43,15 @@ public class CsvAnalysisService {
         ObjectMapper mapper = new ObjectMapper();
         
         // 收集所有公司信息（可以合并）
-        java.util.List<Object> allCompanyInfo = new java.util.ArrayList<>();
+        List<Object> allCompanyInfo = new ArrayList<>();
         
         // 解析每个json片段，只收集公司信息
         for (String json : jsonList) {
             try {
                 java.util.Map<String, Object> map = mapper.readValue(json, java.util.Map.class);
                 Object companyInfo = map.get("公司信息");
-                if (companyInfo instanceof java.util.List) {
-                    allCompanyInfo.addAll((java.util.List<?>) companyInfo);
+                if (companyInfo instanceof List) {
+                    allCompanyInfo.addAll((List<?>) companyInfo);
                 }
             } catch (Exception e) {
                 System.err.println("合并JSON时解析失败: " + e.getMessage());
@@ -63,11 +67,11 @@ public class CsvAnalysisService {
     /**
      * 基于全部数据计算统计结果
      */
-    private String calculateStatisticsFromAllData(List<JobData> allJobData, java.util.List<Object> allCompanyInfo) {
+    private String calculateStatisticsFromAllData(List<JobData> allJobData, List<Object> allCompanyInfo) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             // 1. 计算城市薪资TOP10
-            java.util.Map<String, java.util.List<Integer>> citySalaries = new java.util.HashMap<>();
+            Map<String, List<Integer>> citySalaries = new HashMap<>();
             for (JobData job : allJobData) {
                 String city = job.getCity();
                 if (city != null && !city.isEmpty()) {
@@ -76,17 +80,17 @@ public class CsvAnalysisService {
                         // 提取薪资数字（假设格式如"15k-25k"或"15000-25000"）
                         Integer salary = extractSalaryNumber(salaryStr);
                         if (salary != null) {
-                            citySalaries.computeIfAbsent(city, k -> new java.util.ArrayList<>()).add(salary);
+                            citySalaries.computeIfAbsent(city, k -> new ArrayList<>()).add(salary);
                         }
                     }
                 }
             }
             
-            java.util.List<java.util.Map<String, Object>> citySalaryTop10 = new java.util.ArrayList<>();
+            List<Map<String, Object>> citySalaryTop10 = new ArrayList<>();
             citySalaries.entrySet().stream()
                 .map(entry -> {
                     double avgSalary = entry.getValue().stream().mapToInt(Integer::intValue).average().orElse(0);
-                    java.util.Map<String, Object> cityData = new java.util.HashMap<>();
+                    Map<String, Object> cityData = new HashMap<>();
                     cityData.put("cityName", entry.getKey());
                     cityData.put("avgSalary", (int) avgSalary);
                     return cityData;
@@ -95,32 +99,32 @@ public class CsvAnalysisService {
                 .limit(10)
                 .forEach(citySalaryTop10::add);
             
-            // 2. 计算学历薪资关系
-            java.util.Map<String, java.util.List<Integer>> educationSalaries = new java.util.HashMap<>();
+            // 2. 计算学历薪资关系（与SQL逻辑一致）
+            Map<String, List<Integer>> educationSalaries = new HashMap<>();
             for (JobData job : allJobData) {
-                String education = job.getEducation();
-                if (education != null && !education.isEmpty()) {
+                String education = normalizeEducation(job.getEducation());
+                if (education != null) {
                     String salaryStr = job.getSalary();
                     if (salaryStr != null && !salaryStr.isEmpty()) {
                         Integer salary = extractSalaryNumber(salaryStr);
                         if (salary != null) {
-                            educationSalaries.computeIfAbsent(education, k -> new java.util.ArrayList<>()).add(salary);
+                            educationSalaries.computeIfAbsent(education, k -> new ArrayList<>()).add(salary);
                         }
                     }
                 }
             }
             
-            java.util.List<java.util.Map<String, Object>> educationSalaryRelation = new java.util.ArrayList<>();
+            List<Map<String, Object>> educationSalaryRelation = new ArrayList<>();
             educationSalaries.forEach((education, salaries) -> {
                 double avgSalary = salaries.stream().mapToInt(Integer::intValue).average().orElse(0);
-                java.util.Map<String, Object> eduData = new java.util.HashMap<>();
+                Map<String, Object> eduData = new HashMap<>();
                 eduData.put("educationLevel", education);
                 eduData.put("avgSalary", (int) avgSalary);
                 educationSalaryRelation.add(eduData);
             });
             
-            // 3. 计算学历经验关系
-            java.util.Map<String, Integer> educationExperienceCount = new java.util.HashMap<>();
+            // 3. 计算学历经验关系（与SQL逻辑一致）
+            Map<String, Integer> educationExperienceCount = new HashMap<>();
             for (JobData job : allJobData) {
                 String education = job.getEducation();
                 String experience = job.getExperience();
@@ -130,10 +134,10 @@ public class CsvAnalysisService {
                 }
             }
             
-            java.util.List<java.util.Map<String, Object>> educationExperienceRelation = new java.util.ArrayList<>();
+            List<Map<String, Object>> educationExperienceRelation = new ArrayList<>();
             educationExperienceCount.forEach((key, count) -> {
                 String[] parts = key.split("\\|");
-                java.util.Map<String, Object> relationData = new java.util.HashMap<>();
+                Map<String, Object> relationData = new HashMap<>();
                 relationData.put("educationLevel", parts[0]);
                 relationData.put("experienceLevel", parts[1]);
                 relationData.put("jobCount", count);
@@ -141,7 +145,7 @@ public class CsvAnalysisService {
             });
             
             // 4. 计算城市职位数量
-            java.util.Map<String, Integer> cityJobCount = new java.util.HashMap<>();
+            Map<String, Integer> cityJobCount = new HashMap<>();
             for (JobData job : allJobData) {
                 String city = job.getCity();
                 if (city != null && !city.isEmpty()) {
@@ -149,39 +153,39 @@ public class CsvAnalysisService {
                 }
             }
             
-            java.util.List<java.util.Map<String, Object>> cityJobCountList = new java.util.ArrayList<>();
+            List<Map<String, Object>> cityJobCountList = new ArrayList<>();
             cityJobCount.forEach((city, count) -> {
-                java.util.Map<String, Object> cityData = new java.util.HashMap<>();
+                Map<String, Object> cityData = new HashMap<>();
                 cityData.put("cityName", city);
                 cityData.put("jobCount", count);
                 cityJobCountList.add(cityData);
             });
             
             // 5. 计算城市职位数量TOP10
-            java.util.List<java.util.Map<String, Object>> cityJobCountTop10 = cityJobCountList.stream()
+            List<Map<String, Object>> cityJobCountTop10 = cityJobCountList.stream()
                 .sorted((a, b) -> Integer.compare((Integer) b.get("jobCount"), (Integer) a.get("jobCount")))
                 .limit(10)
-                .collect(java.util.stream.Collectors.toList());
+                .collect(Collectors.toList());
             
-            // 6. 计算学历要求分布
-            java.util.Map<String, Integer> educationDistribution = new java.util.HashMap<>();
+            // 6. 计算学历要求分布（与SQL逻辑一致）
+            Map<String, Integer> educationDistribution = new HashMap<>();
             for (JobData job : allJobData) {
-                String education = job.getEducation();
-                if (education != null && !education.isEmpty()) {
+                String education = normalizeEducation(job.getEducation());
+                if (education != null) {
                     educationDistribution.put(education, educationDistribution.getOrDefault(education, 0) + 1);
                 }
             }
             
-            java.util.List<java.util.Map<String, Object>> educationDistributionList = new java.util.ArrayList<>();
+            List<Map<String, Object>> educationDistributionList = new ArrayList<>();
             educationDistribution.forEach((education, count) -> {
-                java.util.Map<String, Object> eduData = new java.util.HashMap<>();
+                Map<String, Object> eduData = new HashMap<>();
                 eduData.put("educationLevel", education);
                 eduData.put("jobCount", count);
                 educationDistributionList.add(eduData);
             });
             
             // 7. 构建最终JSON
-            java.util.Map<String, Object> finalResult = new java.util.LinkedHashMap<>();
+            Map<String, Object> finalResult = new LinkedHashMap<>();
             finalResult.put("城市薪资TOP10", citySalaryTop10);
             finalResult.put("学历薪资关系", educationSalaryRelation);
             finalResult.put("公司信息", allCompanyInfo);
@@ -199,27 +203,86 @@ public class CsvAnalysisService {
     }
     
     /**
-     * 从薪资字符串中提取数字
+     * 从薪资字符串中提取数字（与SQL逻辑一致）
      */
     private Integer extractSalaryNumber(String salaryStr) {
         try {
-            // 移除k、K、万等字符，提取数字
-            String cleaned = salaryStr.replaceAll("[kK万]", "").replaceAll("[\\s-]", "");
-            // 提取第一个数字
-            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d+)");
-            java.util.regex.Matcher matcher = pattern.matcher(cleaned);
-            if (matcher.find()) {
-                int number = Integer.parseInt(matcher.group(1));
-                // 如果原字符串包含"万"，转换为千
-                if (salaryStr.contains("万")) {
-                    number *= 10;
+            // 检查是否包含范围分隔符"-"
+            if (salaryStr.contains("-")) {
+                String[] parts = salaryStr.split("-");
+                if (parts.length == 2) {
+                    String minSalary = parts[0].trim();
+                    String maxSalary = parts[1].trim();
+                    
+                    // 计算最低薪资
+                    Integer minValue = parseSalaryValue(minSalary);
+                    // 计算最高薪资
+                    Integer maxValue = parseSalaryValue(maxSalary);
+                    
+                    if (minValue != null && maxValue != null) {
+                        // 返回平均值
+                        return (minValue + maxValue) / 2;
+                    }
                 }
-                return number;
+            } else {
+                // 单个薪资值
+                return parseSalaryValue(salaryStr);
             }
         } catch (Exception e) {
             // 解析失败，返回null
         }
         return null;
+    }
+    
+    /**
+     * 解析单个薪资值
+     */
+    private Integer parseSalaryValue(String salaryValue) {
+        try {
+            // 移除空格
+            String cleaned = salaryValue.replaceAll("\\s", "");
+            
+            if (cleaned.contains("万")) {
+                // 万转换为元
+                String numberStr = cleaned.replace("万", "");
+                double number = Double.parseDouble(numberStr);
+                return (int) (number * 10000);
+            } else if (cleaned.contains("千")) {
+                // 千转换为元
+                String numberStr = cleaned.replace("千", "");
+                double number = Double.parseDouble(numberStr);
+                return (int) (number * 1000);
+            } else if (cleaned.matches(".*\\d+.*")) {
+                // 提取数字
+                Pattern pattern = Pattern.compile("(\\d+)");
+                Matcher matcher = pattern.matcher(cleaned);
+                if (matcher.find()) {
+                    return Integer.parseInt(matcher.group(1));
+                }
+            }
+        } catch (Exception e) {
+            // 解析失败，返回null
+        }
+        return null;
+    }
+    
+    /**
+     * 标准化学历字段（与SQL逻辑一致）
+     */
+    private String normalizeEducation(String education) {
+        if (education == null || education.isEmpty()) {
+            return "不限";
+        }
+        switch (education.trim()) {
+            case "本科":
+            case "硕士":
+            case "大专":
+                return education.trim();
+            case "不限":
+                return "不限";
+            default:
+                return "不限";
+        }
     }
 
     /**
@@ -284,57 +347,69 @@ public class CsvAnalysisService {
     private String analyzeWithPromptTemplate(String csvSample) {
         // 使用用户提供的prompt模板
         String prompt = String.format("""
-以下是一个CSV表格的实际数据（共%d行）：
-%s
-
-请严格按照以下要求分析该表格数据，并将结果以 JSON 格式输出：
-
-**重要要求：**
-1. 必须基于提供的实际CSV数据进行计算，不要使用示例数据
-2. 对于薪资数据，请从CSV中提取实际的薪资数值进行计算
-3. 对于职位数量，请统计CSV中实际出现的城市、学历、经验等字段
-4. 如果某个字段在数据中不存在，请返回空数组或合理的默认值
-5. 不要添加任何说明文字，只返回JSON格式数据
-
-**分析要求：**
-1. 提取城市薪资TOP10：计算每个城市的平均薪资，取前10名
-2. 提取学历与薪资关系：统计每个学历级别的平均薪资
-3. 提取公司信息：提取公司名称、经验要求、学历要求与薪资信息
-4. 提取学历经验关系：统计每个学历和经验组合的职位数量
-5. 提取所有城市的职位数量：统计每个城市的职位数量
-6. 提取学历要求分布：统计每个学历要求的职位数量
-
-**数据格式要求：**
-- avgSalary字段必须为整数（从CSV薪资字段计算得出）
-- jobCount字段必须为整数（从CSV实际统计得出）
-- 如果数据不足，请返回实际统计结果，不要填充示例数据
-
-请严格按照以下格式输出（只输出JSON，不要其他文字）：
-
-{
-    "城市薪资TOP10": [
-        {"cityName": "实际城市名", "avgSalary": 实际计算的平均薪资}
-    ],
-    "学历薪资关系": [
-        {"educationLevel": "实际学历", "avgSalary": 实际计算的平均薪资}
-    ],
-    "公司信息": [
-        {"companyName": "实际公司名", "experienceLevel": "实际经验要求", "educationLevel": "实际学历要求", "salary": "实际薪资"}
-    ],
-    "学历经验关系": [
-        {"educationLevel": "实际学历", "experienceLevel": "实际经验", "jobCount": 实际统计数量}
-    ],
-    "城市职位数量": [
-        {"cityName": "实际城市名", "jobCount": 实际统计数量}
-    ],
-    "城市职位数量TOP10": [
-        {"cityName": "实际城市名", "jobCount": 实际统计数量}
-    ],
-    "学历要求分布": [
-        {"educationLevel": "实际学历", "jobCount": 实际统计数量} 
-    ]
-}
-""", csvSample.split("\n").length - 1, csvSample);
+            以下是一个CSV表格的实际数据（共%d行）：
+            %s
+            
+            请严格按照以下要求分析该表格数据，并将结果以 JSON 格式输出：
+            
+            **重要要求：**
+            1. 必须基于提供的实际CSV数据进行计算，不要使用示例数据
+            2. 对于薪资数据，请从CSV中提取实际的薪资数值进行计算
+            3. 对于职位数量，请统计CSV中实际出现的城市、学历、经验等字段
+            4. 如果某个字段在数据中不存在，请返回空数组或合理的默认值
+            5. 不要添加任何说明文字，只返回JSON格式数据
+            
+            **薪资计算规则（必须严格按照此规则）：**
+            - 对于"15k-25k"格式：提取最低值15k=15000元，最高值25k=25000元，计算平均值(15000+25000)/2=20000元
+            - 对于"1.5万-3万"格式：提取最低值1.5万=15000元，最高值3万=30000元，计算平均值(15000+30000)/2=22500元
+            - 对于"8千"格式：直接计算8000元
+            - 万转换为元：乘以10000；千转换为元：乘以1000
+            
+            **学历标准化规则：**
+            - 只保留：本科、硕士、大专、不限
+            - 其他学历类型统一归为"不限"
+            - 空值或null归为"不限"
+            
+            **分析要求：**
+            1. 城市薪资TOP10：计算每个城市的平均薪资，取前10名（柱状图）
+            2. 学历薪资关系：统计每个学历级别的平均薪资（玫瑰图）
+            3. 公司信息：提取公司名称、经验要求、学历要求与薪资信息（滚动列表）
+            4. 学历经验关系：统计每个学历和经验组合的职位数量（热力图）
+            5. 城市职位数量：统计每个城市的职位数量（全国地图）
+            6. 城市职位数量TOP10：统计职位数量前10的城市（柱状图）
+            7. 学历要求分布：统计每个学历要求的职位数量（漏斗图）
+            
+            **数据格式要求：**
+            - avgSalary字段必须为整数（从CSV薪资字段计算得出）
+            - jobCount字段必须为整数（从CSV实际统计得出）
+            - 如果数据不足，请返回实际统计结果，不要填充示例数据
+            
+            请严格按照以下格式输出（只输出JSON，不要其他文字）：
+            
+            {
+                "城市薪资TOP10": [
+                    {"cityName": "实际城市名", "avgSalary": 实际计算的平均薪资}
+                ],
+                "学历薪资关系": [
+                    {"educationLevel": "本科/硕士/大专/不限", "avgSalary": 实际计算的平均薪资}
+                ],
+                "公司信息": [
+                    {"companyName": "实际公司名", "experienceLevel": "实际经验要求", "educationLevel": "实际学历要求", "salary": "实际薪资"}
+                ],
+                "学历经验关系": [
+                    {"educationLevel": "实际学历", "experienceLevel": "实际经验", "jobCount": 实际统计数量}
+                ],
+                "城市职位数量": [
+                    {"cityName": "实际城市名", "jobCount": 实际统计数量}
+                ],
+                "城市职位数量TOP10": [
+                    {"cityName": "实际城市名", "jobCount": 实际统计数量}
+                ],
+                "学历要求分布": [
+                    {"educationLevel": "本科/硕士/大专/不限", "jobCount": 实际统计数量} 
+                ]
+            }
+            """, csvSample.split("\n").length - 1, csvSample);
 
         // 创建OpenAI模型（使用application.properties中的配置）
         try {
@@ -389,11 +464,11 @@ public class CsvAnalysisService {
             System.out.println("成功读取 " + jobDataList.size() + " 条职位数据");
 
             // 2. 分页处理
-            int pageSize = 50; // 每页50行
+            int pageSize = 5; // 每页5行
             List<List<JobData>> pages = paginate(jobDataList, pageSize);
             System.out.println("共分为 " + pages.size() + " 页");
 
-            List<String> jsonResults = new java.util.ArrayList<>();
+            List<String> jsonResults = new ArrayList<>();
             int pageNum = 1;
             for (List<JobData> page : pages) {
                 System.out.println("处理第 " + pageNum + " 页, 数据量: " + page.size());

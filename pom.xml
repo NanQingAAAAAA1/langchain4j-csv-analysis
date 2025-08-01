@@ -57,6 +57,7 @@
             <artifactId>langchain4j-zhipu-ai</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
+        <!--  -->
 
         <!-- 引入redis依赖 -->
         <dependency>
