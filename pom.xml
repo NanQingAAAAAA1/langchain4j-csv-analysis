@@ -73,6 +73,20 @@
             <version>5.9</version>
         </dependency>
 
+        <!-- SQL Database Content Retriever 依赖 -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-experimental-sql</artifactId>
+            <version>${langchain4j.version}</version>
+        </dependency>
+
+        <!-- H2数据库依赖 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+        </dependency>
+
         <!-- Lombok依赖 -->
         <dependency>
             <groupId>org.projectlombok</groupId>

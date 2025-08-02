@@ -4,14 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="667bbdfb-db33-4163-b858-e8247c172556" name="更改" comment="csv文件处理（prompt+document+opencsv）&amp;前端大屏展示与界面原型" />
+    <list default="true" id="667bbdfb-db33-4163-b858-e8247c172556" name="更改" comment="使用H2数据库进行RAG">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cg/base/CsvAnalysisService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cg/base/CsvAnalysisTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cg/controller/CsvAnalysisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cg/controller/CsvAnalysisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cg/springboot/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cg/springboot/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cg/springboot/CsvAnalysisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cg/springboot/CsvAnalysisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/json/analysis_result.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cg/base/CsvAnalysisTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cg/base/CsvAnalysisTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Langchain4j-Project" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="KEEP" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
@@ -47,12 +60,13 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;JavaScript 调试.index.html (1).executor&quot;: &quot;Run&quot;,
     &quot;JavaScript 调试.index.html.executor&quot;: &quot;Run&quot;,
     &quot;Maven.Langchain4j-Project [compile].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Langchain4j-Project&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/AIGC招聘平台/参考项目/langchain4j-csv-analysis/src/main/resources/json&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -61,12 +75,19 @@
     &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;应用程序.CsvAnalysisTest.executor&quot;: &quot;Run&quot;
+    &quot;应用程序.CsvAnalysisTest.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.CsvSqlAnalysisTest.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.SimpleTest.executor&quot;: &quot;Run&quot;
   }
 }</component>
-  <component name="RunManager" selected="JavaScript 调试.index.html">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\AIGC招聘平台\参考项目\langchain4j-csv-analysis\src\main\resources\json" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JavaScript 调试.index.html (1)">
     <configuration name="CsvAnalysisTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.cg.base.CsvAnalysisTest" />
       <module name="Langchain4j-Project" />
@@ -80,13 +101,45 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CsvSqlAnalysisTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.cg.base.CsvSqlAnalysisTest" />
+      <module name="Langchain4j-Project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cg.base.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimpleTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.cg.base.SimpleTest" />
+      <module name="Langchain4j-Project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cg.base.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="index.html (1)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/langchain4j-csv-analysis/src/main/resources/static/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Langchain4j-Project/src/main/resources/static/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript 调试.index.html" />
+        <item itemvalue="JavaScript 调试.index.html (1)" />
+        <item itemvalue="应用程序.CsvSqlAnalysisTest" />
         <item itemvalue="应用程序.CsvAnalysisTest" />
+        <item itemvalue="应用程序.SimpleTest" />
+        <item itemvalue="JavaScript 调试.index.html" />
       </list>
     </recent_temporary>
   </component>
@@ -109,6 +162,10 @@
       <workItem from="1754066469486" duration="10610000" />
       <workItem from="1754078285863" duration="154000" />
       <workItem from="1754078495372" duration="45000" />
+      <workItem from="1754078578793" duration="3334000" />
+      <workItem from="1754082028615" duration="60000" />
+      <workItem from="1754115975599" duration="6791000" />
+      <workItem from="1754122965064" duration="1983000" />
     </task>
     <task id="LOCAL-00001" summary="langchain4j使用例&amp;csv文件处理">
       <option name="closed" value="true" />
@@ -150,7 +207,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754077995665</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="csv文件处理（prompt+document+opencsv）&amp;前端大屏展示与界面原型">
+      <option name="closed" value="true" />
+      <created>1754078782806</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1754078782806</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,7 +235,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="langchain4j使用例&amp;csv文件处理" />
     <MESSAGE value="csv文件处理（prompt+document+opencsv）&amp;前端大屏展示与界面原型" />
-    <option name="LAST_COMMIT_MESSAGE" value="csv文件处理（prompt+document+opencsv）&amp;前端大屏展示与界面原型" />
+    <MESSAGE value="使用H2数据库进行RAG" />
+    <option name="LAST_COMMIT_MESSAGE" value="使用H2数据库进行RAG" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
