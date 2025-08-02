@@ -1,0 +1,299 @@
+{
+  "城市薪资TOP10" : [ {
+    "cityName" : "南京",
+    "avgSalary" : 9500
+  }, {
+    "cityName" : "武汉",
+    "avgSalary" : 9500
+  }, {
+    "cityName" : "上海",
+    "avgSalary" : 9000
+  }, {
+    "cityName" : "深圳",
+    "avgSalary" : 9000
+  }, {
+    "cityName" : "南宁",
+    "avgSalary" : 9000
+  }, {
+    "cityName" : "杭州",
+    "avgSalary" : 9000
+  }, {
+    "cityName" : "大连",
+    "avgSalary" : 8500
+  }, {
+    "cityName" : "广州",
+    "avgSalary" : 7500
+  }, {
+    "cityName" : "长沙",
+    "avgSalary" : 7126
+  }, {
+    "cityName" : "珠海",
+    "avgSalary" : 4003
+  } ],
+  "学历薪资关系" : [ {
+    "educationLevel" : "不限",
+    "avgSalary" : 7900
+  }, {
+    "educationLevel" : "大专",
+    "avgSalary" : 6201
+  }, {
+    "educationLevel" : "本科",
+    "avgSalary" : 7813
+  } ],
+  "公司信息" : [ {
+    "companyName" : "四川信诺智达通信技术有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "大专",
+    "salary" : "6-8千"
+  }, {
+    "companyName" : "盐城鹏壹网络科技有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "9千-1.5万"
+  }, {
+    "companyName" : "佛塑科技集团工程技术开发中心",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "1.1-1.5万·14薪"
+  }, {
+    "companyName" : "傣倾（深圳）科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "9千-1.3万"
+  }, {
+    "companyName" : "兰州印匠士科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "不限",
+    "salary" : "7千-1.2万"
+  }, {
+    "companyName" : "上海齐獭信息科技有限公司",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "6千-1万"
+  }, {
+    "companyName" : "北京宁新商业有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "不限",
+    "salary" : "7千-1.2万"
+  }, {
+    "companyName" : "宁波苡弘商贸有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "1.5-3万·13薪"
+  }, {
+    "companyName" : "益邻（苏州）健康科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "大专",
+    "salary" : "9千-1.2万"
+  }, {
+    "companyName" : "浙江宇视科技有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "8千-1万"
+  }, {
+    "companyName" : "珠海普林芯驰科技有限公司",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "6-8千"
+  }, {
+    "companyName" : "深圳市证通电子股份有限公司",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "8.5千-1.3万"
+  }, {
+    "companyName" : "福达尔软件技术（深圳）有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "1-1.2万"
+  }, {
+    "companyName" : "上海班富科技服务有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "8千-1.2万"
+  }, {
+    "companyName" : "成都蜀智云创科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "4-7千"
+  }, {
+    "companyName" : "深圳耀东安全科技有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "7千-1万"
+  }, {
+    "companyName" : "得塔云（南京）智能科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "大专",
+    "salary" : "4-7千"
+  }, {
+    "companyName" : "广州拼好拼企业管理有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "本科",
+    "salary" : "1-1.5万"
+  }, {
+    "companyName" : "丰豪物流（深圳）有限公司",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "1-2万·13薪"
+  }, {
+    "companyName" : "广州市蓝岭信息技术有限公司",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "5.5-7千"
+  }, {
+    "companyName" : "宁波苡弘商贸有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "1.5-3万·13薪"
+  }, {
+    "companyName" : "拼多多集团-PDD",
+    "experienceLevel" : "在校生/应届生",
+    "educationLevel" : "本科",
+    "salary" : "2-4万·16薪"
+  }, {
+    "companyName" : "中软国际科技服务有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "8千-1.1万·13薪"
+  }, {
+    "companyName" : "山东海川中软科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "不限",
+    "salary" : "7千-1.1万"
+  }, {
+    "companyName" : "宁波苡弘商贸有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "1.5-3万·13薪"
+  }, {
+    "companyName" : "成都市智计全球科技有限责任公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "大专",
+    "salary" : "5-8千"
+  }, {
+    "companyName" : "广州万方计算机科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "不限",
+    "salary" : "4-6千"
+  }, {
+    "companyName" : "长沙科赞电子商务科技有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "不限",
+    "salary" : "7千-1万"
+  }, {
+    "companyName" : "宁波苡弘商贸有限公司",
+    "experienceLevel" : "1年及以上",
+    "educationLevel" : "本科",
+    "salary" : "1.5-3万·13薪"
+  }, {
+    "companyName" : "东聚鑫（上海）信息咨询有限公司",
+    "experienceLevel" : "无需经验",
+    "educationLevel" : "大专",
+    "salary" : "1.2-1.8万"
+  } ],
+  "学历经验关系" : [ {
+    "educationLevel" : "不限",
+    "experienceLevel" : "无需经验",
+    "jobCount" : 5
+  }, {
+    "educationLevel" : "大专",
+    "experienceLevel" : "无需经验",
+    "jobCount" : 5
+  }, {
+    "educationLevel" : "本科",
+    "experienceLevel" : "1年及以上",
+    "jobCount" : 8
+  }, {
+    "educationLevel" : "本科",
+    "experienceLevel" : "在校生/应届生",
+    "jobCount" : 6
+  }, {
+    "educationLevel" : "本科",
+    "experienceLevel" : "无需经验",
+    "jobCount" : 6
+  } ],
+  "城市职位数量" : [ {
+    "cityName" : "上海",
+    "jobCount" : 6
+  }, {
+    "cityName" : "佛山",
+    "jobCount" : 1
+  }, {
+    "cityName" : "南京",
+    "jobCount" : 1
+  }, {
+    "cityName" : "南宁",
+    "jobCount" : 1
+  }, {
+    "cityName" : "大连",
+    "jobCount" : 1
+  }, {
+    "cityName" : "广州",
+    "jobCount" : 3
+  }, {
+    "cityName" : "徐州",
+    "jobCount" : 1
+  }, {
+    "cityName" : "成都",
+    "jobCount" : 4
+  }, {
+    "cityName" : "杭州",
+    "jobCount" : 2
+  }, {
+    "cityName" : "武汉",
+    "jobCount" : 2
+  }, {
+    "cityName" : "深圳",
+    "jobCount" : 4
+  }, {
+    "cityName" : "珠海",
+    "jobCount" : 1
+  }, {
+    "cityName" : "苏州",
+    "jobCount" : 1
+  }, {
+    "cityName" : "长沙",
+    "jobCount" : 2
+  } ],
+  "城市职位数量TOP10" : [ {
+    "cityName" : "上海",
+    "jobCount" : 6
+  }, {
+    "cityName" : "深圳",
+    "jobCount" : 4
+  }, {
+    "cityName" : "成都",
+    "jobCount" : 4
+  }, {
+    "cityName" : "广州",
+    "jobCount" : 3
+  }, {
+    "cityName" : "长沙",
+    "jobCount" : 2
+  }, {
+    "cityName" : "武汉",
+    "jobCount" : 2
+  }, {
+    "cityName" : "杭州",
+    "jobCount" : 2
+  }, {
+    "cityName" : "佛山",
+    "jobCount" : 1
+  }, {
+    "cityName" : "苏州",
+    "jobCount" : 1
+  }, {
+    "cityName" : "南京",
+    "jobCount" : 1
+  } ],
+  "学历要求分布" : [ {
+    "educationLevel" : "不限",
+    "jobCount" : 5
+  }, {
+    "educationLevel" : "大专",
+    "jobCount" : 5
+  }, {
+    "educationLevel" : "本科",
+    "jobCount" : 20
+  } ]
+}
